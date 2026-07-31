@@ -126,7 +126,7 @@ class AnimationSpec {
     final d = effectiveDuration.inMicroseconds;
     if (d == 0) return const Keyframe(t: 0);
     var t = (time - delay).inMicroseconds / d;
-    if (t < 0) return const Keyframe(t: 0, opacity: _startsHidden ? 0 : 1);
+    if (t < 0) return Keyframe(t: 0, opacity: _startsHidden ? 0 : 1);
     t = loop ? t % 1.0 : t.clamp(0.0, 1.0);
     final frames = preset != null ? _presetFrames(preset!) : keyframes;
     for (var i = 0; i < frames.length - 1; i++) {
