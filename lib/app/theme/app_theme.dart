@@ -78,7 +78,7 @@ class AppTheme {
           dark ? StudioTokens.obsidian : StudioTokens.bone,
       textTheme: text,
       splashFactory: InkSparkle.splashFactory,
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         color: dark ? StudioTokens.velvet : Colors.white,
         shape: RoundedRectangleBorder(
