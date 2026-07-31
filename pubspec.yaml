@@ -34,7 +34,7 @@ dependencies:
   # Imaging & export
   image: ^4.2.0            # PNG/JPG/WEBP decode, GIF encode, pixel ops
   image_picker: ^1.1.2
-  file_picker: ^8.0.6
+  
   share_plus: ^9.0.0
   flutter_svg: ^2.0.10
 
