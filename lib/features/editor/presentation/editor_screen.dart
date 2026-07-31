@@ -125,7 +125,7 @@ class _ToolRail extends ConsumerWidget {
               _Tool(
                 icon: Icons.auto_fix_off_outlined,
                 label: l10n.removeBackground,
-                onTap: () => _removeBackground(context, ref, selected),
+                onTap: () => _removeBackground(context, ref, selected as ImageLayer),
               ),
             _Tool(
               icon: Icons.auto_fix_high,
