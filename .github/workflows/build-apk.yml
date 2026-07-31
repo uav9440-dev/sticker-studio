@@ -28,11 +28,10 @@ jobs:
       - name: Generate platform files
         run: flutter create . --platforms android --project-name sticker_studio_ai
 
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Generate localizations
-        run: flutter gen-l10n
+      - name: Set Android SDK 36
+        run: |
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/' android/app/build.gradle.kts
+          sed -i 's/targetSdk = flutter.targetSdkVersion/targetSdk = 36/' android/app/build.gradle.kts
 
       - name: Build release APK
         run: flutter build apk --release --obfuscate --split-debug-info=build/symbols
