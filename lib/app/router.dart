@@ -5,15 +5,21 @@ import 'package:sticker_studio_ai/features/billing/presentation/paywall_screen.d
 import 'package:sticker_studio_ai/features/editor/presentation/editor_screen.dart';
 import 'package:sticker_studio_ai/features/home/home_screen.dart';
 import 'package:sticker_studio_ai/features/library/presentation/library_screen.dart';
+import 'package:sticker_studio_ai/features/onboarding/onboarding_screen.dart';
 import 'package:sticker_studio_ai/features/templates/presentation/templates_screen.dart';
 
-final appRouter = GoRouter(
-  routes: [
-    GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
-    GoRoute(path: '/editor', builder: (_, __) => const EditorScreen()),
-    GoRoute(path: '/library', builder: (_, __) => const LibraryScreen()),
-    GoRoute(path: '/templates', builder: (_, __) => const TemplatesScreen()),
-    GoRoute(path: '/ai', builder: (_, __) => const AiScreen()),
-    GoRoute(path: '/paywall', builder: (_, __) => const PaywallScreen()),
-  ],
-);
+/// ملاحظة تنقّل: الشاشات الفرعية تُفتح بـ context.push حتى يرجع زر
+/// الرجوع للشاشة السابقة بدل الخروج من التطبيق.
+GoRouter createRouter({required bool showWelcome}) => GoRouter(
+      initialLocation: showWelcome ? '/welcome' : '/',
+      routes: [
+        GoRoute(path: '/welcome', builder: (_, __) => const OnboardingScreen()),
+        GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
+        GoRoute(path: '/editor', builder: (_, __) => const EditorScreen()),
+        GoRoute(path: '/library', builder: (_, __) => const LibraryScreen()),
+        GoRoute(
+            path: '/templates', builder: (_, __) => const TemplatesScreen()),
+        GoRoute(path: '/ai', builder: (_, __) => const AiScreen()),
+        GoRoute(path: '/paywall', builder: (_, __) => const PaywallScreen()),
+      ],
+    );

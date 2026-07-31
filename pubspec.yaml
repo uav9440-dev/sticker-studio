@@ -34,11 +34,8 @@ dependencies:
   # Imaging & export
   image: ^4.2.0            # PNG/JPG/WEBP decode, GIF encode, pixel ops
   image_picker: ^1.1.2
-  
   share_plus: ^9.0.0
   flutter_svg: ^2.0.10
-
-  # WhatsApp integration (add sticker packs directly)
 
   flutter_image_compress: ^2.3.0
   in_app_purchase: ^3.2.0
@@ -60,4 +57,3 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true   # gen-l10n for ar / en
-

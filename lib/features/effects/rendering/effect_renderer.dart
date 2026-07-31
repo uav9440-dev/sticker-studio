@@ -225,8 +225,31 @@ class EffectRenderer {
   }
 
   void _paintTextOnArc(Canvas canvas, TextLayer layer) {
-    final chars = layer.text.characters.toList();
+    // العربية حروفها متصلة، فتقسيمها حرفًا حرفًا على القوس يكسر الاتصال.
+    // الحل: نقسّم النص العربي إلى كلمات كاملة (تبقى حروف كل كلمة متصلة)
+    // ونوزّع الكلمات على القوس، بينما الإنجليزية تُوزّع حرفًا حرفًا.
+    final List<String> chars = layer.textDirectionRtl
+        ? layer.text.split(' ').where((w) => w.isNotEmpty).toList()
+        : layer.text.characters.toList();
     if (chars.isEmpty) return;
+    if (layer.textDirectionRtl && chars.length == 1) {
+      // كلمة واحدة: نرسمها كاملة بدون تقويس حفاظًا على شكل الحروف.
+      final tp = TextPainter(
+        text: TextSpan(
+          text: layer.text,
+          style: TextStyle(
+            fontFamily: layer.fontFamily,
+            fontSize: layer.fontSize,
+            color: layer.color,
+            fontWeight: FontWeight.values[
+                ((layer.fontWeight / 100).round() - 1).clamp(0, 8)],
+          ),
+        ),
+        textDirection: TextDirection.rtl,
+      )..layout();
+      tp.paint(canvas, Offset(-tp.width / 2, -tp.height / 2));
+      return;
+    }
     final direction =
         layer.textDirectionRtl ? chars.reversed.toList() : chars;
     final radius = 90 + (1 - layer.pathCurvature) * 240;
@@ -255,7 +278,8 @@ class EffectRenderer {
                 ((layer.fontWeight / 100).round() - 1).clamp(0, 8)],
           ),
         ),
-        textDirection: TextDirection.ltr,
+        textDirection:
+            layer.textDirectionRtl ? TextDirection.rtl : TextDirection.ltr,
       )..layout();
       glyph.paint(canvas, Offset(-glyph.width / 2, -glyph.height / 2));
       canvas.restore();

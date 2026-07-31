@@ -38,7 +38,7 @@ class TemplatesScreen extends ConsumerWidget {
                 ref
                     .read(editorControllerProvider.notifier)
                     .loadProject(project);
-                context.go('/editor');
+                context.push('/editor');
               },
               child: Padding(
                 padding: const EdgeInsets.all(12),

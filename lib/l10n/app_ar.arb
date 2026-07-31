@@ -1,6 +1,6 @@
 {
   "@@locale": "ar",
-  "appTitle": "استوديو الملصقات AI",
+  "appTitle": "استوديو الملصقات",
   "homeCreate": "تصميم جديد",
   "homeTemplates": "القوالب",
   "homeLibrary": "مكتبتي",
@@ -34,5 +34,6 @@
   "aiPromptHint": "مثال: صمّم ملصق صباح الخير ذهبي فاخر",
   "aiGenerate": "توليد التصميم",
   "searchHint": "ابحث في ملصقاتك…",
-  "emptyLibrary": "لا توجد مشاريع بعد — ابدأ تصميمك الأول"
+  "emptyLibrary": "لا توجد مشاريع بعد — ابدأ تصميمك الأول",
+  "editText": "تعديل النص"
 }

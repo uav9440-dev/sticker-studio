@@ -99,6 +99,6 @@ class _AiScreenState extends ConsumerState<AiScreen> {
     if (!mounted) return;
     setState(() => _busy = false);
     ref.read(editorControllerProvider.notifier).loadProject(project);
-    context.go('/editor');
+    context.push('/editor');
   }
 }

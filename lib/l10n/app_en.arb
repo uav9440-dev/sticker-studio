@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Sticker Studio AI",
+  "appTitle": "Sticker Studio",
   "homeCreate": "New design",
   "homeTemplates": "Templates",
   "homeLibrary": "My library",
@@ -34,5 +34,6 @@
   "aiPromptHint": "e.g. Create a luxury golden Good Morning sticker",
   "aiGenerate": "Generate design",
   "searchHint": "Search your stickers…",
-  "emptyLibrary": "No projects yet — start your first design"
+  "emptyLibrary": "No projects yet — start your first design",
+  "editText": "Edit text"
 }

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
+import 'package:sticker_studio_ai/core/widgets/bounce.dart';
 import 'package:sticker_studio_ai/core/utils/image_cache_service.dart';
 import 'package:sticker_studio_ai/core/utils/image_tools.dart';
 import 'package:sticker_studio_ai/core/utils/result.dart';
@@ -114,8 +115,29 @@ class _ToolRail extends ConsumerWidget {
             _Tool(
               icon: Icons.text_fields,
               label: l10n.addText,
-              onTap: () => controller.addTextLayer('نص جديد'),
+              onTap: () async {
+                final text = await _promptForText(context);
+                if (text != null && text.trim().isNotEmpty) {
+                  controller.addTextLayer(text.trim());
+                }
+              },
             ),
+            if (selected is TextLayer)
+              _Tool(
+                icon: Icons.edit_outlined,
+                label: l10n.editText,
+                onTap: () async {
+                  final text = await _promptForText(context,
+                      initial: selected.text);
+                  if (text != null && text.trim().isNotEmpty) {
+                    controller.updateSelectedText((t) => t.copyWith(
+                        text: text.trim(),
+                        name: text.trim().length > 12
+                            ? '${text.trim().substring(0, 12)}…'
+                            : text.trim()));
+                  }
+                },
+              ),
             _Tool(
               icon: Icons.image_outlined,
               label: l10n.addImage,
@@ -125,7 +147,7 @@ class _ToolRail extends ConsumerWidget {
               _Tool(
                 icon: Icons.auto_fix_off_outlined,
                 label: l10n.removeBackground,
-                onTap: () => _removeBackground(context, ref, selected as ImageLayer),
+                onTap: () => _removeBackground(context, ref, selected),
               ),
             _Tool(
               icon: Icons.auto_fix_high,
@@ -179,6 +201,39 @@ class _ToolRail extends ConsumerWidget {
     );
   }
 
+  /// نافذة كتابة النص — تفتح الكيبورد تلقائيًا.
+  Future<String?> _promptForText(BuildContext context,
+      {String initial = ''}) {
+    final controller = TextEditingController(text: initial);
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(initial.isEmpty ? l10n.addText : l10n.editText),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          maxLines: 3,
+          minLines: 1,
+          textDirection: TextDirection.rtl,
+          decoration: const InputDecoration(
+            hintText: 'اكتب نصك هنا…',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('إلغاء'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(controller.text),
+            child: const Text('تم'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _pickImage(BuildContext context, WidgetRef ref) async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (picked == null) return;
@@ -220,24 +275,25 @@ class _Tool extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsetsDirectional.only(end: 6),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: enabled ? onTap : null,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 150),
-          opacity: enabled ? 1 : 0.35,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon),
-                const SizedBox(height: 4),
-                Text(label, style: Theme.of(context).textTheme.labelSmall),
-              ],
-            ),
+      padding: const EdgeInsetsDirectional.only(end: 8),
+      child: Bounce(
+        enabled: enabled,
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.6),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 22),
+              const SizedBox(height: 4),
+              Text(label, style: theme.textTheme.labelSmall),
+            ],
           ),
         ),
       ),
@@ -303,7 +359,7 @@ class _ExportSheetState extends ConsumerState<_ExportSheet> {
     // بوابة النسخة الكاملة: التصدير متاح خلال التجربة (3 أيام) أو بعد الشراء.
     if (!ref.read(entitlementProvider).isActive) {
       Navigator.of(context).pop();
-      context.go('/paywall');
+      context.push('/paywall');
       return;
     }
     setState(() => _busy = true);

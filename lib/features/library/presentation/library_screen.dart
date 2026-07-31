@@ -62,7 +62,7 @@ class LibraryScreen extends ConsumerWidget {
                               ref
                                   .read(editorControllerProvider.notifier)
                                   .loadProject(project);
-                              context.go('/editor');
+                              context.push('/editor');
                             },
                             child: GridTile(
                               footer: GridTileBar(
