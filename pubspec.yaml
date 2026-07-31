@@ -60,5 +60,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true   # gen-l10n for ar / en
-  assets:
-    - assets/fonts/
+
