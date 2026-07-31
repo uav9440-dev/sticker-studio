@@ -174,10 +174,10 @@ class _CanvasPainter extends CustomPainter {
   }
 
   void _paintSafeMargin(Canvas canvas) {
-    const m = WhatsAppSpecs.safeMargin.toDouble();
-    const size = WhatsAppSpecs.stickerSize.toDouble();
+    final m = WhatsAppSpecs.safeMargin.toDouble();
+    final size = WhatsAppSpecs.stickerSize.toDouble();
     canvas.drawRect(
-      const Rect.fromLTRB(m, m, size - m, size - m),
+      Rect.fromLTRB(m, m, size - m, size - m),
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1
@@ -209,7 +209,7 @@ class _CanvasPainter extends CustomPainter {
   }
 
   void _paintGuides(Canvas canvas) {
-    const size = WhatsAppSpecs.stickerSize.toDouble();
+    final size = WhatsAppSpecs.stickerSize.toDouble();
     final paint = Paint()
       ..color = const Color(0xFF2E6E5E)
       ..strokeWidth = 1.5;
